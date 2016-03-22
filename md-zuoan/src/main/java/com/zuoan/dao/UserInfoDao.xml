@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuoan.dao.UserInfoDao">
+
+    <insert id="addUserInfo" parameterType="com.zuoan.module.UserInfo">
+        INSERT INTO user_info(userId,userName,password,avatar,phone,isDelete,modifyDate,createrDate)
+        VALUES (#{userId},#{userName},#{password},#{avatar},#{phone},0,sysdate(),sysdate())
+
+    </insert>
+    <update id="delUserInfo" parameterType="string">
+        UPDATE user_info
+        set isDelete = 1 WHERE userId = #{userId}
+    </update>
+
+    <update id="updateUserInfo" parameterType="com.zuoan.module.UserInfo">
+        UPDATE user_info
+        <set>
+
+            <if test="userName != null and userName != ''">
+                AND userName = #{userName}
+            </if>
+            <if test="password != null and password != ''">
+                AND password = #{passeord}
+            </if>
+            <if test="avatar != null and avatar != ''">
+                AND avatar = #{avatar}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND phone = #{phone}
+            </if>
+        </set>
+        WHERE isDelete = 0 AND  userId = #{userId}
+    </update>
+    <select id="selectUserInfo" parameterType="com.zuoan.module.UserInfo" resultType="com.zuoan.module.UserInfo">
+        SELECT userId,userName,avatar,phone FROM user_info
+        <where>
+            isDelete = 0
+            <if test="userId != null and userId != ''">
+                AND userId = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND userName = #{userName}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND userId = #{userId}
+            </if>
+        </where>
+    </select>
+</mapper>
