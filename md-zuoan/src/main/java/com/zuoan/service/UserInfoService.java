@@ -2,6 +2,8 @@ package com.zuoan.service;
 
 import com.zuoan.module.UserInfo;
 
+import java.util.List;
+
 /**
  * Created by htt on 2016/3/22.
  */
@@ -12,5 +14,9 @@ public interface UserInfoService {
 
     boolean updateUserInfo(UserInfo userInfo);
 
-    UserInfo queryUserInfo(UserInfo userInfo);
+    List<UserInfo> queryUserInfo(UserInfo userInfo);
+
+    UserInfo queryUserInfoById(String userId);
+
+    UserInfo queryUserInfoByPhone(String phone);
 }

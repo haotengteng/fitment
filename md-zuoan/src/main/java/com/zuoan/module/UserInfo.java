@@ -1,12 +1,18 @@
 package com.zuoan.module;
 
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Administrator on 2016/3/22.
  */
-public class UserInfo extends Base{
+public class UserInfo extends Base {
     private static final long serialVersionUID = -8400837878862818942L;
+    @NotNull(message = "{user.id.null}",groups = {Update.class})
     public String userId;
+    @NotNull(message = "{user.name.null}",groups = {Add.class})
     public String userName;
+    @NotNull(message = "{user.password.null}",groups = {Add.class})
     public String password;
     public String avatar;
     public String phone;
@@ -52,5 +58,11 @@ public class UserInfo extends Base{
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public interface Add {
+    }
+
+    public interface Update {
     }
 }

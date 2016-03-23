@@ -17,11 +17,6 @@ public class Main {
     // Base URI the Grizzly HTTP server will listen on
     public static final String BASE_URI = "http://0.0.0.0:8080/";
 
-    /**
-     * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
-     *
-     * @return Grizzly HTTP server.
-     */
     public static HttpServer startServer() {
         // 加载jersey扫描
         ZuoanApplication loanApplication = new ZuoanApplication();

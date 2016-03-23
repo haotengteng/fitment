@@ -46,4 +46,12 @@
             </if>
         </where>
     </select>
+    <select id="selectUserInfoById" parameterType="string" resultType="com.zuoan.module.UserInfo">
+        SELECT userId,userName,avatar,phone FROM user_info
+        WHERE  isDelete = 0 and userId = #{userId}
+    </select>
+    <select id="selectUserInfoByPhone" parameterType="string" resultType="com.zuoan.module.UserInfo">
+        SELECT serId,userName,avatar,phone FROM user_info
+        WHERE  isDelete = 0 and phone = #{phone}
+    </select>
 </mapper>
