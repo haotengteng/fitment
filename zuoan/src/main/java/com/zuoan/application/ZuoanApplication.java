@@ -9,6 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.ws.rs.ApplicationPath;
 
 /**
+ *
  * Created by htt on 2016/3/22.
  */
 @ApplicationPath("/*")

@@ -5,6 +5,7 @@ import com.zuoan.module.UserInfo;
 import java.util.List;
 
 /**
+ *
  * Created by htt on 2016/3/22.
  */
 public interface UserInfoDao {
@@ -19,4 +20,6 @@ public interface UserInfoDao {
     UserInfo selectUserInfoById(String userId);
 
     UserInfo selectUserInfoByPhone(String phone);
+
+    UserInfo selectUserInfoByUserName(String userName);
 }

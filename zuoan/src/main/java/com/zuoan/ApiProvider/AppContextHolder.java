@@ -14,6 +14,6 @@ public class AppContextHolder {
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+        AppContextHolder.applicationContext = applicationContext;
     }
 }

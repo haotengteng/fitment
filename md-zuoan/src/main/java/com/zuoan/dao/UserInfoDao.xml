@@ -54,4 +54,8 @@
         SELECT serId,userName,avatar,phone FROM user_info
         WHERE  isDelete = 0 and phone = #{phone}
     </select>
+    <select id="selectUserInfoByUserName" parameterType="string" resultType="com.zuoan.module.UserInfo">
+        SELECT serId,userName,avatar,phone FROM user_info
+        WHERE  isDelete = 0 and userName = #{userName}
+    </select>
 </mapper>

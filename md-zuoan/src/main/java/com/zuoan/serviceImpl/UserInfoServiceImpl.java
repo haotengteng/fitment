@@ -64,4 +64,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         return userInfoDao.selectUserInfoByPhone(phone);
     }
+
+    public UserInfo queryUserInfoByUserName(String userName) {
+        if (StringUtils.isBlank(userName)){
+            return null;
+        }
+        return userInfoDao.selectUserInfoByUserName(userName);
+    }
 }

@@ -3,13 +3,14 @@ package com.zuoan.module;
 import java.io.Serializable;
 
 /**
+ *
  * Created by Administrator on 2016/3/15.
  */
 public class Base implements Serializable{
     private static final long serialVersionUID = -3041996176588455105L;
     public String isDelete;
     public String modifyDate;
-    public String createrDate;
+    public String createDate;
 
     public Base() {
     }
@@ -30,11 +31,11 @@ public class Base implements Serializable{
         this.modifyDate = modifyDate;
     }
 
-    public String getCreaterDate() {
-        return createrDate;
+    public String getCreateDate() {
+        return createDate;
     }
 
-    public void setCreaterDate(String createrDate) {
-        this.createrDate = createrDate;
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }
