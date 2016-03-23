@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
 import com.zuoan.module.UserInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Update;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
@@ -88,9 +87,6 @@ public class UserInfoResource {
 
     /**
      * 修改用户信息
-     *
-     * @param userInfo
-     * @return
      */
     @Path("update")
     @PUT
@@ -106,11 +102,6 @@ public class UserInfoResource {
 
     /**
      * 用户信息模糊查询
-     *
-     * @param userName
-     * @param userId
-     * @param phone
-     * @return
      */
     @Path("query")
     @GET
