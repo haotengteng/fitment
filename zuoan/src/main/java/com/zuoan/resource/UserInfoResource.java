@@ -75,7 +75,7 @@ public class UserInfoResource {
      */
     @Path("delete")
     @DELETE
-    public Response delUserInfo(@NotBlank String userId) {
+    public Response delUserInfo(@NotBlank(message = "userId 不能为空") String userId) {
         JSONObject jsonObject = new JSONObject();
         if (ApiProvider.userInfoService.delUserInfo(userId)) {
             jsonObject.put("result", "成功");

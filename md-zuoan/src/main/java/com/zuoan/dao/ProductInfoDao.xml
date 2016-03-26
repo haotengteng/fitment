@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuoan.dao.ProductInfoDao">
+    <sql id="baseSql">
+        productId,productType,productName,productUrl,productImageUrl,productPrice,remark,isDelete,modifyTime,createTime
+    </sql>
+
+    <insert id="addProductInfo" parameterType="com.zuoan.module.ProductInfo">
+        INSERT INTO product_info(productId,productType,productName,productUrl,productImageUrl,productPrice,remark,isDelete,modifyTime,createTime)
+        VALUES (#{productId},#{productType},#{productName},#{productUrl},#{productImageUrl},#{productPrice},#{remark},0,sysdate(),sysdate())
+    </insert>
+
+    <update id="delProductInfo" parameterType="string">
+        UPDATE product_info
+        set isDelete = 1 WHERE productId = #{productId}
+    </update>
+
+    <update id="updateProductInfo" parameterType="com.zuoan.module.ProductInfo">
+        UPDATE product_info
+        <set>
+            <if test="productType != null and productType != ''">
+                productType = #{productType},
+            </if>
+            <if test="productName != null and productName != ''">
+                productName = #{productName},
+            </if>
+            <if test="productUrl != null and productUrl != ''">
+                productUrl = #{productUrl},
+            </if>
+            <if test="productImageUrl != null and productImageUrl != ''">
+                productImageUrl = #{productImageUrl},
+            </if>
+            <if test="productPrice != null ">
+                productPrice = #{productPrice},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            modifyTime=sysdate()
+        </set>
+        WHERE isDelete = 0 AND typeId = #{typeId}
+    </update>
+    <select id="selectProductInfo" parameterType="com.zuoan.module.ProductInfo" resultType="com.zuoan.module.ProductInfo">
+        SELECT <include refid="baseSql"/> FROM product_info
+        <where>
+            isDelete = 0
+            <if test="productType != null and productType != ''">
+                AND productType = #{productType}
+            </if>
+            <if test="productName != null and productName != ''">
+                AND productName = #{productName}
+            </if>
+            <if test="productPrice != null ">
+                AND productPrice = #{productPrice}
+            </if>
+        </where>
+    </select>
+    <select id="selectProductInfoById" parameterType="string" resultType="com.zuoan.module.ProductInfo">
+        SELECT <include refid="baseSql"/> FROM product_info
+        WHERE  isDelete = 0 and productId = #{productId}
+    </select>
+</mapper>

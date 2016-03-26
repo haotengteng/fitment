@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuoan.dao.ProductTypeDao">
+    <sql id="baseSql">
+        typeId,typeCode,typeName,remark,isDelete,modifyTime,createTime
+    </sql>
+
+    <insert id="addProductType" parameterType="com.zuoan.module.ProductType">
+        INSERT INTO product_type(typeId,typeCode,typeName,remark,isDelete,modifyTime,createTime)
+        VALUES (#{typeId},#{typeCode},#{typeName},#{remark},0,sysdate(),sysdate())
+
+    </insert>
+
+    <update id="delProductType" parameterType="string">
+        UPDATE product_type
+        set isDelete = 1 WHERE typeId = #{typeId}
+    </update>
+    <update id="delProductTypeByTypeCode" parameterType="string">
+        UPDATE product_type
+        set isDelete = 1 WHERE typeCode = #{typeCode}
+    </update>
+
+    <update id="updateProductType" parameterType="com.zuoan.module.ProductType">
+        UPDATE product_type
+        <set>
+            <if test="typeCode != null and typeCode != ''">
+                typeCode = #{typeCode},
+            </if>
+            <if test="typeName != null and typeName != ''">
+                typeName = #{typeName},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            modifyTime=sysdate()
+        </set>
+        WHERE isDelete = 0 AND typeId = #{typeId}
+    </update>
+    <select id="selectProductType" parameterType="com.zuoan.module.ProductType" resultType="com.zuoan.module.ProductType">
+        SELECT <include refid="baseSql"/> FROM product_type
+        <where>
+            isDelete = 0
+            <if test="typeCode != null and typeCode != ''">
+                AND typeCode = #{typeCode}
+            </if>
+            <if test="typeName != null and typeName != ''">
+                AND typeName = #{typeName}
+            </if>
+        </where>
+    </select>
+    <select id="selectProductTypeById" parameterType="string" resultType="com.zuoan.module.ProductType">
+        SELECT <include refid="baseSql"/> FROM product_type
+        WHERE  isDelete = 0 and typeId = #{typeId}
+    </select>
+    <select id="selectProductTypeByTypeCode" parameterType="string" resultType="com.zuoan.module.ProductType">
+        SELECT <include refid="baseSql"/> FROM product_type
+        WHERE  isDelete = 0 and typeCode = #{typeCode}
+    </select>
+</mapper>

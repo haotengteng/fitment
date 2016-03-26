@@ -8,12 +8,9 @@ import java.io.Serializable;
  */
 public class Base implements Serializable{
     private static final long serialVersionUID = -3041996176588455105L;
-    public String isDelete;
-    public String modifyDate;
-    public String createDate;
-
-    public Base() {
-    }
+    private String isDelete;
+    private String modifyTime;
+    private String createTime;
 
     public String getIsDelete() {
         return isDelete;
@@ -23,19 +20,19 @@ public class Base implements Serializable{
         this.isDelete = isDelete;
     }
 
-    public String getModifyDate() {
-        return modifyDate;
+    public String getModifyTime() {
+        return modifyTime;
     }
 
-    public void setModifyDate(String modifyDate) {
-        this.modifyDate = modifyDate;
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

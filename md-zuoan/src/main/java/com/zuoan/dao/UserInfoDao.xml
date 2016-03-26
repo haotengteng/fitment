@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zuoan.dao.UserInfoDao">
+    <sql id="baseSql">
+        userId,userName,password,avatar,phone,isDelete,modifyTime,createTime
+    </sql>
 
     <insert id="addUserInfo" parameterType="com.zuoan.module.UserInfo">
-        INSERT INTO user_info(userId,userName,password,avatar,phone,isDelete,modifyDate,createrDate)
+        INSERT INTO user_info(userId,userName,password,avatar,phone,isDelete,modifyTime,createTime)
         VALUES (#{userId},#{userName},#{password},#{avatar},#{phone},0,sysdate(),sysdate())
 
     </insert>
@@ -15,24 +18,24 @@
     <update id="updateUserInfo" parameterType="com.zuoan.module.UserInfo">
         UPDATE user_info
         <set>
-
             <if test="userName != null and userName != ''">
-                AND userName = #{userName}
+                userName = #{userName},
             </if>
             <if test="password != null and password != ''">
-                AND password = #{passeord}
+                password = #{passeord},
             </if>
             <if test="avatar != null and avatar != ''">
-                AND avatar = #{avatar}
+                avatar = #{avatar},
             </if>
             <if test="phone != null and phone != ''">
-                AND phone = #{phone}
+                phone = #{phone},
             </if>
+            modifyTime=sysdate()
         </set>
         WHERE isDelete = 0 AND  userId = #{userId}
     </update>
     <select id="selectUserInfo" parameterType="com.zuoan.module.UserInfo" resultType="com.zuoan.module.UserInfo">
-        SELECT userId,userName,avatar,phone FROM user_info
+        SELECT <include refid="baseSql"/> FROM user_info
         <where>
             isDelete = 0
             <if test="userId != null and userId != ''">
@@ -47,15 +50,15 @@
         </where>
     </select>
     <select id="selectUserInfoById" parameterType="string" resultType="com.zuoan.module.UserInfo">
-        SELECT userId,userName,avatar,phone FROM user_info
+        SELECT <include refid="baseSql"/> FROM user_info
         WHERE  isDelete = 0 and userId = #{userId}
     </select>
     <select id="selectUserInfoByPhone" parameterType="string" resultType="com.zuoan.module.UserInfo">
-        SELECT serId,userName,avatar,phone FROM user_info
+        SELECT <include refid="baseSql"/> FROM user_info
         WHERE  isDelete = 0 and phone = #{phone}
     </select>
     <select id="selectUserInfoByUserName" parameterType="string" resultType="com.zuoan.module.UserInfo">
-        SELECT serId,userName,avatar,phone FROM user_info
+        SELECT <include refid="baseSql"/> FROM user_info
         WHERE  isDelete = 0 and userName = #{userName}
     </select>
 </mapper>

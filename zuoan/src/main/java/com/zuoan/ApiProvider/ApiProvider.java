@@ -1,5 +1,7 @@
 package com.zuoan.ApiProvider;
 
+import com.zuoan.service.ProductInfoService;
+import com.zuoan.service.ProductTypeService;
 import com.zuoan.service.UserInfoService;
 
 /**
@@ -8,7 +10,11 @@ import com.zuoan.service.UserInfoService;
  */
 public class ApiProvider {
     public static final UserInfoService userInfoService;
+    public static final ProductTypeService productTypeService;
+    public static final ProductInfoService productInfoService;
     static {
         userInfoService = AppContextHolder.getApplicationContext().getBean(UserInfoService.class);
+        productTypeService = AppContextHolder.getApplicationContext().getBean(ProductTypeService.class);
+        productInfoService = AppContextHolder.getApplicationContext().getBean(ProductInfoService.class);
     }
 }

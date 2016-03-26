@@ -14,9 +14,8 @@ import java.util.List;
  */
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
-
     @Resource
-    UserInfoDao userInfoDao;
+    private UserInfoDao userInfoDao;
     public boolean addUserInfo(UserInfo userInfo) {
         if (userInfo == null || StringUtils.isBlank(userInfo.getUserId())){
             return false;

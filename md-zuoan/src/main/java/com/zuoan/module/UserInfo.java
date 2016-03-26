@@ -9,13 +9,13 @@ import org.hibernate.validator.constraints.NotBlank;
 public class UserInfo extends Base {
     private static final long serialVersionUID = -8400837878862818942L;
     @NotBlank(message = "{user.id.null}", groups = {Update.class})
-    public String userId;
+    private String userId;
     @NotBlank(message = "{user.name.null}", groups = {Add.class})
-    public String userName;
+    private String userName;
     @NotBlank(message = "{user.password.null}", groups = {Add.class})
-    public String password;
-    public String avatar;
-    public String phone;
+    private String password;
+    private String avatar;
+    private String phone;
 
     public UserInfo() {
     }
