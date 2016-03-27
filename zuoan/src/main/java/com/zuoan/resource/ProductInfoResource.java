@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
 import com.zuoan.Utils.UtilTools;
 import com.zuoan.module.ProductInfo;
+import com.zuoan.utils.mybatis.Page;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ws.rs.*;
@@ -70,16 +71,18 @@ public class ProductInfoResource {
 
     @Path("page/{pageIndex}")
     @GET
-    public Response queryProductInfo(@PathParam("pageIndex") final String pageIndex,
-                                     @QueryParam("pageSize") final String pageSize,
+    public Response queryProductInfo(@PathParam("pageIndex") @DefaultValue("1") final String pageIndexStr,
+                                     @QueryParam("pageSize") @DefaultValue("10") final String pageSizeStr,
                                      @QueryParam("productType") String productType,
                                      @QueryParam("productName") String productName) {
+        Integer pageNum = Integer.parseInt(pageIndexStr);
+        Integer pageSize = Integer.parseInt(pageSizeStr);
         ProductInfo query = new ProductInfo();
         query.setProductType(productType);
         query.setProductName(productName);
-
-        List<ProductInfo> lists = ApiProvider.productInfoService.queryProductInfo(query);
-
+        Page page = new Page(pageNum,pageSize);
+        Page<ProductInfo> productInfoPage = ApiProvider.productInfoService.queryProductInfoByPage(query,page);
+        List<ProductInfo> lists = productInfoPage.getResult();
         JSONObject json = new JSONObject();
         if (lists != null) {
             JSONArray jsonArray = new JSONArray();
@@ -87,10 +90,12 @@ public class ProductInfoResource {
                 JSONObject jsonObject = (JSONObject) JSON.toJSON(productInfo);
                 jsonArray.add(jsonObject);
             }
-            json.put("totalSize", jsonArray.size());
+            json.put("totalSize", productInfoPage.getTotal());
+            json.put("page",productInfoPage.getPageNum());
             json.put("info", jsonArray);
         } else {
             json.put("totalSize", 0);
+            json.put("page",0);
             json.put("info", new JSONArray());
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();

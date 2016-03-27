@@ -71,8 +71,8 @@ public class ProductTypeResource {
 
     @Path("page/{pageIndex}")
     @GET
-    public Response queryProductType(@PathParam("pageIndex") final String pageIndexStr,
-                                         @QueryParam("pageSize") final String pageSizeStr,
+    public Response queryProductType(@PathParam("pageIndex") @DefaultValue("1") final String pageIndexStr,
+                                     @QueryParam("pageSize") @DefaultValue("10") final String pageSizeStr,
                                      @QueryParam("typeCode") String typeCode,
                                      @QueryParam("typeName") String typeName) {
         Integer pageNum = Integer.parseInt(pageIndexStr);
@@ -80,9 +80,9 @@ public class ProductTypeResource {
         ProductType query = new ProductType();
         query.setTypeCode(typeCode);
         query.setTypeName(typeName);
-        Page page = new Page(pageNum,pageSize);
-        List<ProductType> lists = ApiProvider.productTypeService.queryProductTypeByPage(query,page).getResult();
-
+        Page page = new Page(pageNum, pageSize);
+        Page<ProductType> productTypePage = ApiProvider.productTypeService.queryProductTypeByPage(query, page);
+        List<ProductType> lists = productTypePage.getResult();
         JSONObject json = new JSONObject();
         if (lists != null) {
             JSONArray jsonArray = new JSONArray();
@@ -90,10 +90,12 @@ public class ProductTypeResource {
                 JSONObject jsonObject = (JSONObject) JSON.toJSON(productType);
                 jsonArray.add(jsonObject);
             }
-            json.put("totalSize", jsonArray.size());
+            json.put("totalSize", productTypePage.getTotal());
+            json.put("page",productTypePage.getPageNum());
             json.put("info", jsonArray);
         } else {
             json.put("totalSize", 0);
+            json.put("page",0);
             json.put("info", new JSONArray());
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();

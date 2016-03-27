@@ -3,6 +3,8 @@ package com.zuoan.serviceImpl;
 import com.zuoan.dao.ProductInfoDao;
 import com.zuoan.module.ProductInfo;
 import com.zuoan.service.ProductInfoService;
+import com.zuoan.utils.mybatis.Page;
+import com.zuoan.utils.mybatis.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,14 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     public List<ProductInfo> queryProductInfo(ProductInfo productInfo) {
         return productInfoDao.selectProductInfo(productInfo);
     }
+
+    @Override
+    public Page<ProductInfo> queryProductInfoByPage(ProductInfo productInfo, Page page) {
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        productInfoDao.selectProductInfo(productInfo);
+        return PageHelper.endPage();
+    }
+
     @Override
     public ProductInfo queryProductInfoById(String productId) {
         if (StringUtils.isBlank(productId)){

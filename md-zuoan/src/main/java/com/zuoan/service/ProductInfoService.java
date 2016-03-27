@@ -1,6 +1,7 @@
 package com.zuoan.service;
 
 import com.zuoan.module.ProductInfo;
+import com.zuoan.utils.mybatis.Page;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface ProductInfoService {
     boolean updateProductInfo(ProductInfo productInfo);
 
     List<ProductInfo> queryProductInfo(ProductInfo productInfo);
+
+    Page<ProductInfo> queryProductInfoByPage(ProductInfo productInfo,Page page);
 
     ProductInfo queryProductInfoById(String productId);
 }
