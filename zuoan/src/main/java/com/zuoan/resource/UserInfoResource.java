@@ -19,49 +19,60 @@ import java.util.List;
 @Path("user")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserInfoResource {
-
     /**
      * 删除账户
      */
-    @Path("delete")
+    @Path("{userId}")
     @DELETE
-    public Response delUserInfo(@NotBlank(message = "userId 不能为空") String userId) {
+    public Response delUserInfo(@NotBlank(message = "userId 不能为空") @PathParam("userId") String userId) {
         JSONObject jsonObject = new JSONObject();
         if (ApiProvider.userInfoService.delUserInfo(userId)) {
-            jsonObject.put("result", "成功");
-            return Response.status(Response.Status.OK).entity(jsonObject.toJSONString()).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(Response.Status.OK).build();
         }
-        jsonObject.put("result", "失败");
+        jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
 
     /**
      * 修改用户信息
      */
-    @Path("update")
+    @Path("{userId}")
     @PUT
-    public Response updateUserInfo(@Validated({UserInfo.Update.class}) UserInfo userInfo) {
+    public Response updateUserInfo(@Validated({UserInfo.Update.class}) UserInfo userInfo, @PathParam("userId") String userId) {
         JSONObject jsonObject = new JSONObject();
+        userInfo.setUserId(userId);
         if (ApiProvider.userInfoService.updateUserInfo(userInfo)) {
-            jsonObject.put("result", "成功");
-            return Response.status(Response.Status.OK).entity(jsonObject.toJSONString()).type(MediaType.APPLICATION_JSON).build();
+            return Response.status(Response.Status.OK).build();
         }
-        jsonObject.put("result", "失败");
+        jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("{userId}")
+    @GET
+    public Response getUserInfo(@PathParam("userId") String userId) {
+        UserInfo userInfo = ApiProvider.userInfoService.queryUserInfoById(userId);
+        JSONObject json;
+        if (userInfo != null) {
+            json = (JSONObject) JSON.toJSON(userInfo);
+        } else {
+            json = new JSONObject();
+        }
+        return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
     }
 
     /**
      * 用户信息模糊查询
      */
-    @Path("query")
+    @Path("page/{pageIndex}")
     @GET
-    public Response queryUserInfo(@QueryParam("userName") String userName,
-                                  @QueryParam("userId") String userId,
+    public Response queryUserInfo(@PathParam("pageIndex") final String pageIndex,
+                                  @QueryParam("pageSize") final String pageSize,
+                                  @QueryParam("userName") String userName,
                                   @QueryParam("phone") String phone) {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(userName);
         userInfo.setPhone(phone);
-        userInfo.setUserId(userId);
         List<UserInfo> userInfos = ApiProvider.userInfoService.queryUserInfo(userInfo);
         JSONObject json = new JSONObject();
         if (userInfos != null) {
@@ -74,24 +85,11 @@ public class UserInfoResource {
                 jsonObject.put("password", user.getAvatar());
                 jsonArray.add(jsonObject);
             }
-            json.put("size", jsonArray.size());
-            json.put("infos", jsonArray);
+            json.put("totalSize", jsonArray.size());
+            json.put("info", jsonArray);
         } else {
-            json.put("size", 0);
-            json.put("infos", new JSONArray());
-        }
-        return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
-    }
-
-    @GET
-    @Path("{userId}")
-    public Response getUserInfo(@PathParam("userId") String userId) {
-        UserInfo userInfo = ApiProvider.userInfoService.queryUserInfoById(userId);
-        JSONObject json;
-        if (userInfo != null) {
-            json = (JSONObject) JSON.toJSON(userInfo);
-        } else {
-            json = new JSONObject();
+            json.put("totalSize", 0);
+            json.put("info", new JSONArray());
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
     }

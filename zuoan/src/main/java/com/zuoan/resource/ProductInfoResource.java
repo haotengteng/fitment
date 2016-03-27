@@ -32,8 +32,9 @@ public class ProductInfoResource {
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
 
+    @Path("{productId}")
     @DELETE
-    public Response delProductInfo(@NotBlank(message = "productId 不能为空") String productId) {
+    public Response delProductInfo(@NotBlank(message = "productId 不能为空") @PathParam("productId") final String productId) {
         JSONObject jsonObject = new JSONObject();
         if (ApiProvider.productInfoService.delProductInfo(productId)) {
             return Response.status(Response.Status.OK).build();

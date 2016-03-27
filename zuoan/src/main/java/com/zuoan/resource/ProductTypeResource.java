@@ -32,8 +32,9 @@ public class ProductTypeResource {
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
 
+    @Path("{typeId}")
     @DELETE
-    public Response delProductType(@NotBlank(message = "typeId 不能为空") String typeId) {
+    public Response delProductType(@NotBlank(message = "typeId 不能为空") @PathParam("typeId") String typeId) {
         JSONObject jsonObject = new JSONObject();
         if (ApiProvider.productTypeService.delProductType(typeId)) {
             return Response.status(Response.Status.OK).build();
