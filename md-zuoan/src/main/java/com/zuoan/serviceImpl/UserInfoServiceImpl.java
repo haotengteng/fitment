@@ -3,6 +3,8 @@ package com.zuoan.serviceImpl;
 import com.zuoan.dao.UserInfoDao;
 import com.zuoan.module.UserInfo;
 import com.zuoan.service.UserInfoService;
+import com.zuoan.utils.mybatis.Page;
+import com.zuoan.utils.mybatis.PageHelper;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,6 +50,13 @@ public class UserInfoServiceImpl implements UserInfoService {
             return null;
         }
         return userInfoDao.selectUserInfo(userInfo);
+    }
+
+    @Override
+    public Page<UserInfo> queryUserInfoByPage(UserInfo userInfo, Page page) {
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        userInfoDao.selectUserInfo(userInfo);
+        return PageHelper.endPage();
     }
 
     public UserInfo queryUserInfoById(String userId) {

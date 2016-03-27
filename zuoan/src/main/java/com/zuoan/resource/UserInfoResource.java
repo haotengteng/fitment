@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
+import com.zuoan.module.ProductType;
 import com.zuoan.module.UserInfo;
+import com.zuoan.utils.mybatis.Page;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
 
@@ -66,14 +68,18 @@ public class UserInfoResource {
      */
     @Path("page/{pageIndex}")
     @GET
-    public Response queryUserInfo(@PathParam("pageIndex") final String pageIndex,
-                                  @QueryParam("pageSize") final String pageSize,
+    public Response queryUserInfo(@PathParam("pageIndex") @DefaultValue("1") final String pageIndexStr,
+                                  @QueryParam("pageSize") @DefaultValue("10") final String pageSizeStr,
                                   @QueryParam("userName") String userName,
                                   @QueryParam("phone") String phone) {
+        Integer pageNum = Integer.parseInt(pageIndexStr);
+        Integer pageSize = Integer.parseInt(pageSizeStr);
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(userName);
         userInfo.setPhone(phone);
-        List<UserInfo> userInfos = ApiProvider.userInfoService.queryUserInfo(userInfo);
+        Page page = new Page(pageNum, pageSize);
+        Page<UserInfo> userInfoPage = ApiProvider.userInfoService.queryUserInfoByPage(userInfo,page);
+        List<UserInfo> userInfos = userInfoPage.getResult();
         JSONObject json = new JSONObject();
         if (userInfos != null) {
             JSONArray jsonArray = new JSONArray();
@@ -85,10 +91,12 @@ public class UserInfoResource {
                 jsonObject.put("password", user.getAvatar());
                 jsonArray.add(jsonObject);
             }
-            json.put("totalSize", jsonArray.size());
+            json.put("totalSize", userInfoPage.getTotal());
+            json.put("page",userInfoPage.getPageNum());
             json.put("info", jsonArray);
         } else {
             json.put("totalSize", 0);
+            json.put("page",0);
             json.put("info", new JSONArray());
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();

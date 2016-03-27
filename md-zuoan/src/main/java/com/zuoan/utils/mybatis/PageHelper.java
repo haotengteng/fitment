@@ -119,7 +119,7 @@ public class PageHelper implements Interceptor {
     private String buildPageSql(String sql, Page page) {
         StringBuilder pageSql = new StringBuilder(200);
         pageSql.append(sql);
-        pageSql.append(" LIMIT ").append(page.getPageNum()*page.getPageSize()-1);
+        pageSql.append(" LIMIT ").append((page.getPageNum()-1)*page.getPageSize());
         pageSql.append(" , ").append(page.getPageSize());
         return pageSql.toString();
     }
