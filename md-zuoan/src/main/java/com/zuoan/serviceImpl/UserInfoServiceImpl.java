@@ -44,7 +44,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     public List<UserInfo> queryUserInfo(UserInfo userInfo) {
-        if (userInfo == null || StringUtils.isBlank(userInfo.getUserId())){
+        if (userInfo == null ){
             return null;
         }
         return userInfoDao.selectUserInfo(userInfo);

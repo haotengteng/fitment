@@ -63,7 +63,8 @@ public class AccountResource {
         }
         if (userInfo != null) {
             if (password.equals(userInfo.getPassword())) {
-                NewCookie newCookie = new NewCookie("token", userInfo.getUserId());
+                NewCookie newCookie = new NewCookie("token", userInfo.getUserId(),"/", null, NewCookie.DEFAULT_VERSION, null,
+                        NewCookie.DEFAULT_MAX_AGE, null, false, true);
                 //将userId存入缓存
                 ApiProvider.redisCacheManage.addCache(userInfo.getUserId(), userInfo, 7200);
                 return Response.status(Response.Status.OK).cookie(newCookie).build();

@@ -1,6 +1,7 @@
 package com.zuoan.service;
 
 import com.zuoan.module.ProductType;
+import com.zuoan.utils.mybatis.Page;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface ProductTypeService {
     boolean updateProductType(ProductType productType);
 
     List<ProductType> queryProductType(ProductType productType);
+
+    Page<ProductType> queryProductTypeByPage(ProductType productType, Page page);
 
     ProductType queryProductTypeById(String typeId);
 

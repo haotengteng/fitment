@@ -39,6 +39,17 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath*:com/zuoan/dao/*.xml" />
+        <property name="plugins">
+            <array>
+                <bean class="com.zuoan.utils.mybatis.PageHelper">
+                    <property name="properties">
+                        <value>
+                            property-key=property-value
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
     </bean>
     <!-- mybatis操作接口扫描 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -72,4 +83,14 @@
         <aop:pointcut id="transaction" expression="execution (* com.zuoan.serviceImpl.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="transaction"/>
     </aop:config>
+
+    <!-- 配置mybatis分页拦截器 -->
+    <bean id="offsetLimitIntercepter" class="com.zuoan.utils.mybatis.PageHelper">
+        <property name="properties">
+            <props>
+                <prop key="dialectName">${md.jdbc.dialectName}</prop>
+                <prop key="dialectClass">${md.jdbc.dialectclass}</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

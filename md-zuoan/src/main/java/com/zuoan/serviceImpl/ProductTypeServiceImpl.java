@@ -3,6 +3,8 @@ package com.zuoan.serviceImpl;
 import com.zuoan.dao.ProductTypeDao;
 import com.zuoan.module.ProductType;
 import com.zuoan.service.ProductTypeService;
+import com.zuoan.utils.mybatis.Page;
+import com.zuoan.utils.mybatis.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,15 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public List<ProductType> queryProductType(ProductType productType) {
         return productTypeDao.selectProductType(productType);
     }
+
+    @Override
+    public Page<ProductType> queryProductTypeByPage(ProductType productType, Page page) {
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        productTypeDao.selectProductType(productType);
+        return PageHelper.endPage();
+
+    }
+
     @Override
     public ProductType queryProductTypeById(String typeId) {
         if (StringUtils.isBlank(typeId)){
