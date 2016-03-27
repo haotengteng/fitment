@@ -2,46 +2,34 @@ package com.zuoan.filter;
 
 import com.zuoan.ApiProvider.ApiProvider;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
+ *
  * Created by haotengteng on 2016/3/27.
  */
-@WebFilter(filterName = "LoginCheckFilter", urlPatterns = "/*")
-public class LoginCheckFilter implements Filter {
-
+@Provider
+public class LoginCheckFilter implements ContainerRequestFilter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("初始化过滤器");
-    }
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-
-        String requestURI = httpServletRequest.getRequestURI();
-        if (requestURI.startsWith("zuoan/user/")) {
-            Cookie[] cookies = httpServletRequest.getCookies();
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    if (ApiProvider.redisCacheManage.getValue(cookie.getValue()) != null) {
-                        filterChain.doFilter(servletRequest, servletResponse);
-                    } else {
-                        //跳转到登陆界面
-                        return;
-                    }
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        String path = requestContext.getUriInfo().getPath();
+        // TODO 路径需要配置(配置哪些不需要登录的)
+        if (!path.startsWith("account")) {
+            Cookie cookie = requestContext.getCookies().get("token");
+            if (cookie != null && "token".equals(cookie.getName())) {
+                if (ApiProvider.redisCacheManage.getValue(cookie.getValue()) == null) {
+                    //跳转到登陆界面
+                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
                 }
+            } else {
+                //跳转到登陆界面
+                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             }
         }
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }
