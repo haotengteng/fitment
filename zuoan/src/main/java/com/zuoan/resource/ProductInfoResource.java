@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
-import com.zuoan.module.ProductType;
+import com.zuoan.module.ProductInfo;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ws.rs.*;
@@ -17,48 +17,48 @@ import java.util.UUID;
  *
  * Created by xujy on 2016/3/26.
  */
-@Path("product/type")
+@Path("product/info")
 @Produces(MediaType.APPLICATION_JSON)
-public class ProductTypeResource {
+public class ProductInfoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postProductType(ProductType productType) {
+    public Response postProductInfo(ProductInfo productInfo) {
         JSONObject jsonObject = new JSONObject();
-        productType.setTypeId(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
-        if (ApiProvider.productTypeService.addProductType(productType)) {
-            jsonObject.put("typeId", productType.getTypeId());
+        productInfo.setProductId(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
+        if (ApiProvider.productInfoService.addProductInfo(productInfo)) {
+            jsonObject.put("productId", productInfo.getProductId());
             return Response.status(Response.Status.OK).entity(jsonObject.toJSONString()).type(MediaType.APPLICATION_JSON).build();
         }
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
     @DELETE
-    public Response delProductType(@NotBlank(message = "typeId 不能为空") String typeId) {
+    public Response delProductInfo(@NotBlank(message = "productId 不能为空") String productId) {
         JSONObject jsonObject = new JSONObject();
-        if (ApiProvider.productTypeService.delProductType(typeId)) {
+        if (ApiProvider.productInfoService.delProductInfo(productId)) {
             return Response.status(Response.Status.OK).build();
         }
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
-    @Path("{typeId}")
+    @Path("{productId}")
     @PUT
-    public Response putProductType(ProductType productType, @PathParam("typeId") final String typeId) {
+    public Response putProductInfo(ProductInfo productInfo, @PathParam("productId") final String productId) {
         JSONObject jsonObject = new JSONObject();
-        productType.setTypeId(typeId);
-        if (ApiProvider.productTypeService.updateProductType(productType)) {
+        productInfo.setProductId(productId);
+        if (ApiProvider.productInfoService.updateProductInfo(productInfo)) {
             return Response.status(Response.Status.OK).build();
         }
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
     @GET
-    @Path("{typeId}")
-    public Response getProductType(@PathParam("typeId") String typeId) {
-        ProductType productType = ApiProvider.productTypeService.queryProductTypeById(typeId);
+    @Path("{productId}")
+    public Response getProductInfo(@PathParam("productId") String productId) {
+        ProductInfo productInfo = ApiProvider.productInfoService.queryProductInfoById(productId);
         JSONObject json;
-        if (productType != null) {
-            json = (JSONObject) JSON.toJSON(productType);
+        if (productInfo != null) {
+            json = (JSONObject) JSON.toJSON(productInfo);
         } else {
             json = new JSONObject();
         }
@@ -66,21 +66,21 @@ public class ProductTypeResource {
     }
     @Path("page/{pageIndex}")
     @GET
-    public Response queryProductType(@PathParam("pageIndex") final String pageIndex,
+    public Response queryProductInfo(@PathParam("pageIndex") final String pageIndex,
                                   @QueryParam("pageSize") final String pageSize,
-                                  @QueryParam("typeCode") String typeCode,
-                                  @QueryParam("typeName") String typeName) {
-        ProductType query = new ProductType();
-        query.setTypeCode(typeCode);
-        query.setTypeName(typeName);
+                                  @QueryParam("productType") String productType,
+                                  @QueryParam("productName") String productName) {
+        ProductInfo query = new ProductInfo();
+        query.setProductType(productType);
+        query.setProductName(productName);
 
-        List<ProductType> lists = ApiProvider.productTypeService.queryProductType(query);
+        List<ProductInfo> lists = ApiProvider.productInfoService.queryProductInfo(query);
 
         JSONObject json = new JSONObject();
         if (lists != null) {
             JSONArray jsonArray = new JSONArray();
-            for (ProductType productType : lists) {
-                JSONObject jsonObject = (JSONObject) JSON.toJSON(productType);
+            for (ProductInfo productInfo : lists) {
+                JSONObject jsonObject = (JSONObject) JSON.toJSON(productInfo);
                 jsonArray.add(jsonObject);
             }
             json.put("totalSize", jsonArray.size());
