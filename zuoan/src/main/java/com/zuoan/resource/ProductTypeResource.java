@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
 import com.zuoan.Utils.UtilTools;
 import com.zuoan.module.ProductType;
+import com.zuoan.utils.mybatis.Page;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.ws.rs.*;
@@ -70,15 +71,17 @@ public class ProductTypeResource {
 
     @Path("page/{pageIndex}")
     @GET
-    public Response queryProductType(@PathParam("pageIndex") final String pageIndex,
-                                     @QueryParam("pageSize") final String pageSize,
+    public Response queryProductType(@PathParam("pageIndex") final String pageIndexStr,
+                                         @QueryParam("pageSize") final String pageSizeStr,
                                      @QueryParam("typeCode") String typeCode,
                                      @QueryParam("typeName") String typeName) {
+        Integer pageNum = Integer.parseInt(pageIndexStr);
+        Integer pageSize = Integer.parseInt(pageSizeStr);
         ProductType query = new ProductType();
         query.setTypeCode(typeCode);
         query.setTypeName(typeName);
-
-        List<ProductType> lists = ApiProvider.productTypeService.queryProductType(query);
+        Page page = new Page(pageNum,pageSize);
+        List<ProductType> lists = ApiProvider.productTypeService.queryProductTypeByPage(query,page).getResult();
 
         JSONObject json = new JSONObject();
         if (lists != null) {
