@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
+import com.zuoan.Utils.UtilTools;
 import com.zuoan.module.ProductType;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -11,10 +12,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.UUID;
 
 /**
- *
  * Created by xujy on 2016/3/26.
  */
 @Path("product/type")
@@ -24,7 +23,7 @@ public class ProductTypeResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postProductType(ProductType productType) {
         JSONObject jsonObject = new JSONObject();
-        productType.setTypeId(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
+        productType.setTypeId(UtilTools.UUIDUtil());
         if (ApiProvider.productTypeService.addProductType(productType)) {
             jsonObject.put("typeId", productType.getTypeId());
             return Response.status(Response.Status.OK).entity(jsonObject.toJSONString()).type(MediaType.APPLICATION_JSON).build();
@@ -32,6 +31,7 @@ public class ProductTypeResource {
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
+
     @DELETE
     public Response delProductType(@NotBlank(message = "typeId 不能为空") String typeId) {
         JSONObject jsonObject = new JSONObject();
@@ -41,6 +41,7 @@ public class ProductTypeResource {
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
+
     @Path("{typeId}")
     @PUT
     public Response putProductType(ProductType productType, @PathParam("typeId") final String typeId) {
@@ -52,6 +53,7 @@ public class ProductTypeResource {
         jsonObject.put("error", "失败");
         return Response.status(Response.Status.OK).entity(jsonObject).type(MediaType.APPLICATION_JSON).build();
     }
+
     @GET
     @Path("{typeId}")
     public Response getProductType(@PathParam("typeId") String typeId) {
@@ -64,12 +66,13 @@ public class ProductTypeResource {
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
     }
+
     @Path("page/{pageIndex}")
     @GET
     public Response queryProductType(@PathParam("pageIndex") final String pageIndex,
-                                  @QueryParam("pageSize") final String pageSize,
-                                  @QueryParam("typeCode") String typeCode,
-                                  @QueryParam("typeName") String typeName) {
+                                     @QueryParam("pageSize") final String pageSize,
+                                     @QueryParam("typeCode") String typeCode,
+                                     @QueryParam("typeName") String typeName) {
         ProductType query = new ProductType();
         query.setTypeCode(typeCode);
         query.setTypeName(typeName);
