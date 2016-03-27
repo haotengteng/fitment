@@ -29,7 +29,7 @@ public class RedisCacheableAop {
         String key = getCacheKey(pjp, cache);
         ValueOperations<String, Object> valueOper = redisTemplate.opsForValue();
         Object value = valueOper.get(key);    //从缓存获取数据
-        if (value != null) return value;       //如果有数据,则直接返回
+        if (value != null) return value;       //如果有数据,则直接返回  //是否需要重新设定超时时间？
 
         value = pjp.proceed();      //跳过缓存,到后端查询数据
         if (cache.expire() <= 0) {      //如果没有设置过期时间,则无限期缓存
