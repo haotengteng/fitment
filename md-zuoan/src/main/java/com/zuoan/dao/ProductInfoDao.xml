@@ -50,9 +50,6 @@
             <if test="productName != null and productName != ''">
                 AND productName = #{productName}
             </if>
-            <if test="productPrice != null ">
-                AND productPrice = #{productPrice}
-            </if>
         </where>
     </select>
     <select id="selectProductInfoById" parameterType="string" resultType="com.zuoan.module.ProductInfo">
