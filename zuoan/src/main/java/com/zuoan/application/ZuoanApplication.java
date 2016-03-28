@@ -22,7 +22,7 @@ public class ZuoanApplication extends ResourceConfig {
 
         property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
         property(ServerProperties.BV_DISABLE_VALIDATE_ON_EXECUTABLE_OVERRIDE_CHECK, true);
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath*:config\\md-zuoan-application.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath*:config/md-zuoan-application.xml");
         AppContextHolder appContextHolder = new AppContextHolder();
         appContextHolder.setApplicationContext(applicationContext);
     }
