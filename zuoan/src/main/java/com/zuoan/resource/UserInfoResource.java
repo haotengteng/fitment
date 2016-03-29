@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
-import com.zuoan.module.ProductType;
 import com.zuoan.module.UserInfo;
 import com.zuoan.utils.mybatis.Page;
 import org.hibernate.validator.constraints.NotBlank;
@@ -84,11 +83,7 @@ public class UserInfoResource {
         if (userInfos != null) {
             JSONArray jsonArray = new JSONArray();
             for (UserInfo user : userInfos) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("userId", user.getUserId());
-                jsonObject.put("userName", user.getUserName());
-                jsonObject.put("phone", user.getPhone());
-                jsonObject.put("password", user.getAvatar());
+                JSONObject jsonObject = (JSONObject) JSON.toJSON(user);
                 jsonArray.add(jsonObject);
             }
             json.put("totalSize", userInfoPage.getTotal());

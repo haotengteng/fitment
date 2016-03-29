@@ -18,8 +18,8 @@ public class LoginCheckFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
-        // TODO 路径需要配置(配置哪些不需要登录的)
-        if (!path.startsWith("account")) {
+        // 路径需要配置(配置哪些不需要登录的)
+        if (!(path.startsWith("account") || path.startsWith("application.wadl"))) {
             Cookie cookie = requestContext.getCookies().get("token");
             if (cookie != null && "token".equals(cookie.getName())) {
                 if (ApiProvider.redisCacheManage.getValue(cookie.getValue()) == null) {
