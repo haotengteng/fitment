@@ -5,6 +5,8 @@ import com.zuoan.module.UserInfo;
 import com.zuoan.service.UserInfoService;
 import com.zuoan.utils.mybatis.Page;
 import com.zuoan.utils.mybatis.PageHelper;
+import com.zuoan.utils.redis.CacheKey;
+import com.zuoan.utils.redis.RedisCacheable;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
 
@@ -58,22 +60,22 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoDao.selectUserInfo(userInfo);
         return PageHelper.endPage();
     }
-
-    public UserInfo queryUserInfoById(String userId) {
+    @RedisCacheable
+    public UserInfo queryUserInfoById(@CacheKey String userId) {
         if (StringUtils.isBlank(userId)){
             return null;
         }
         return userInfoDao.selectUserInfoById(userId);
     }
-
-    public UserInfo queryUserInfoByPhone(String phone) {
+    @RedisCacheable
+    public UserInfo queryUserInfoByPhone(@CacheKey String phone) {
         if (StringUtils.isBlank(phone)){
             return null;
         }
         return userInfoDao.selectUserInfoByPhone(phone);
     }
-
-    public UserInfo queryUserInfoByUserName(String userName) {
+    @RedisCacheable
+    public UserInfo queryUserInfoByUserName(@CacheKey String userName) {
         if (StringUtils.isBlank(userName)){
             return null;
         }
