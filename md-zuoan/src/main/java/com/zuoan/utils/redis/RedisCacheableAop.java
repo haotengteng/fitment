@@ -1,16 +1,13 @@
 package com.zuoan.utils.redis;
 
-import org.apache.ibatis.cache.CacheKey;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,37 +46,39 @@ public class RedisCacheableAop {
      */
     private String getCacheKey(ProceedingJoinPoint pjp, RedisCacheable cache) {
         StringBuilder buf = new StringBuilder();
-        buf.append(pjp.getSignature().getDeclaringTypeName()).append(".").append(pjp.getSignature().getName());
-        if (cache.key().length() > 0) {
-            buf.append(".").append(cache.key());
-        }
+//        buf.append(pjp.getSignature().getDeclaringTypeName()).append(".").append(pjp.getSignature().getName());
+//        if (cache.key().length() > 0) {
+//            buf.append(".").append(cache.key());
+//        }
 
         Object[] args = pjp.getArgs();
         if (cache.keyMode() == RedisCacheable.KeyMode.DEFAULT) {
-            Annotation[][] pas = ((MethodSignature) pjp.getSignature()).getMethod().getParameterAnnotations();
-            for (int i = 0; i < pas.length; i++) {
-                for (Annotation an : pas[i]) {
-                    if (an instanceof CacheKey) {
-                        buf.append(".").append(args[i].toString());
-                        break;
-                    }
-                }
-            }
-        } else if (cache.keyMode() == RedisCacheable.KeyMode.BASIC) {
-            for (Object arg : args) {
-                if (arg instanceof String) {
-                    buf.append(".").append(arg);
-                } else if (arg instanceof Integer || arg instanceof Long || arg instanceof Short) {
-                    buf.append(".").append(arg.toString());
-                } else if (arg instanceof Boolean) {
-                    buf.append(".").append(arg.toString());
-                }
-            }
-        } else if (cache.keyMode() == RedisCacheable.KeyMode.ALL) {
-            for (Object arg : args) {
-                buf.append(".").append(arg.toString());
-            }
+            return args[0].toString();
+//            Annotation[][] pas = ((MethodSignature) pjp.getSignature()).getMethod().getParameterAnnotations();
+//            for (int i = 0; i < pas.length; i++) {
+//                for (Annotation an : pas[i]) {
+//                    if (an instanceof CacheKey) {
+//                        buf.append(".").append(args[i].toString());
+//                        break;
+//                    }
+//                }
+//            }
         }
+//        else if (cache.keyMode() == RedisCacheable.KeyMode.BASIC) {
+//            for (Object arg : args) {
+//                if (arg instanceof String) {
+//                    buf.append(".").append(arg);
+//                } else if (arg instanceof Integer || arg instanceof Long || arg instanceof Short) {
+//                    buf.append(".").append(arg.toString());
+//                } else if (arg instanceof Boolean) {
+//                    buf.append(".").append(arg.toString());
+//                }
+//            }
+//        } else if (cache.keyMode() == RedisCacheable.KeyMode.ALL) {
+//            for (Object arg : args) {
+//                buf.append(".").append(arg.toString());
+//            }
+//        }
 
         return buf.toString();
     }
