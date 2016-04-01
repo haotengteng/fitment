@@ -21,7 +21,7 @@ public class RedisCacheableForUpdateAop {
     private RedisTemplate redisTemplate;
 
     @Around("@annotation(cache)")
-    public void cached(final ProceedingJoinPoint pjp, RedisCacheableForUpdate cache) throws Throwable {
+    public Object cached(final ProceedingJoinPoint pjp, RedisCacheableForUpdate cache) throws Throwable {
 
         String key = getCacheKey(pjp, cache);
         ValueOperations<String, Object> valueOper = redisTemplate.opsForValue();
@@ -30,8 +30,8 @@ public class RedisCacheableForUpdateAop {
         if (value != null) {
             redisTemplate.delete(key);
         }
-         value = valueOper.get(key);
-         pjp.proceed();      //跳过缓存,到后端查询数据
+        return pjp.proceed();//跳过缓存,到后端查询数据
+
     }
 
     /**
@@ -48,14 +48,13 @@ public class RedisCacheableForUpdateAop {
 
         if (cache.keyMode() == RedisCacheableForUpdate.KeyMode.DEFAULT) {
             try {
-                Field field = args[0].getClass().getDeclaredFields()[0];
+                Field field = args[0].getClass().getDeclaredFields()[1];
                 field.setAccessible(true);
-                return  field.get(args[0]).toString();
+                buf =  new StringBuilder(field.get(args[0]).toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-
         }
-        return buf.toString();
+        return buf.append("aop").toString();
     }
 }

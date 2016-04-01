@@ -22,7 +22,7 @@
                 userName = #{userName},
             </if>
             <if test="password != null and password != ''">
-                password = #{passeord},
+                password = #{password},
             </if>
             <if test="avatar != null and avatar != ''">
                 avatar = #{avatar},

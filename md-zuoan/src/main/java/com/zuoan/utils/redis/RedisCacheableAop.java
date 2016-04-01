@@ -53,7 +53,7 @@ public class RedisCacheableAop {
 
         Object[] args = pjp.getArgs();
         if (cache.keyMode() == RedisCacheable.KeyMode.DEFAULT) {
-            return args[0].toString();
+            buf = new StringBuilder(args[0].toString());
 //            Annotation[][] pas = ((MethodSignature) pjp.getSignature()).getMethod().getParameterAnnotations();
 //            for (int i = 0; i < pas.length; i++) {
 //                for (Annotation an : pas[i]) {
@@ -80,6 +80,6 @@ public class RedisCacheableAop {
 //            }
 //        }
 
-        return buf.toString();
+        return buf.append("aop").toString();
     }
 }
