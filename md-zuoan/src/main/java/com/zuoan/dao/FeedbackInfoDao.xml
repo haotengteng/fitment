@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuoan.dao.FeedbackInfoDao">
+    <sql id="baseSql">
+        feedbackId,feedbackUserName,feedbackEmail,feedbackPhone,feedbackTitle,feedbackContent,isDelete,modifyTime,createTime
+    </sql>
+
+    <insert id="addFeedbackInfo" parameterType="com.zuoan.module.FeedbackInfo">
+        INSERT INTO feedback_info(feedbackId,feedbackUserName,feedbackEmail,feedbackPhone,feedbackTitle,feedbackContent,isDelete,modifyTime,createTime)
+        VALUES (#{feedbackId},#{feedbackUserName},#{feedbackEmail},#{feedbackPhone},#{feedbackTitle},#{feedbackContent},0,sysdate(),sysdate())
+    </insert>
+
+    <update id="delFeedbackInfo" parameterType="string">
+        UPDATE feedback_info
+        set isDelete = 1 WHERE feedbackId = #{feedbackId}
+    </update>
+
+    <update id="updateFeedbackInfo" parameterType="com.zuoan.module.FeedbackInfo">
+        UPDATE feedback_info
+        <set>
+            <if test="feedbackUserName != null and feedbackUserName != ''">
+                feedbackUserName = #{feedbackUserName},
+            </if>
+            <if test="feedbackEmail != null and feedbackEmail != ''">
+                feedbackEmail = #{feedbackEmail},
+            </if>
+            <if test="feedbackPhone != null and feedbackPhone != ''">
+                feedbackPhone = #{feedbackPhone},
+            </if>
+            <if test="feedbackTitle != null and feedbackTitle != ''">
+                feedbackTitle = #{feedbackTitle},
+            </if>
+            <if test="feedbackContent != null and feedbackContent != ''">
+                feedbackContent = #{feedbackContent},
+            </if>
+            modifyTime=sysdate()
+        </set>
+        WHERE isDelete = 0 AND typeId = #{typeId}
+    </update>
+    <select id="selectFeedbackInfo" parameterType="com.zuoan.module.FeedbackInfo" resultType="com.zuoan.module.FeedbackInfo">
+        SELECT <include refid="baseSql"/> FROM feedback_info
+        <where>
+            isDelete = 0
+            <if test="feedbackUserName != null and feedbackUserName != ''">
+                AND feedbackUserName = #{feedbackUserName}
+            </if>
+            <if test="feedbackEmail != null and feedbackEmail != ''">
+                AND feedbackEmail = #{feedbackEmail}
+            </if>
+            <if test="feedbackPhone != null and feedbackPhone != ''">
+                AND feedbackPhone = #{feedbackPhone}
+            </if>
+        </where>
+    </select>
+    <select id="selectFeedbackInfoById" parameterType="string" resultType="com.zuoan.module.FeedbackInfo">
+        SELECT <include refid="baseSql"/> FROM feedback_info
+        WHERE  isDelete = 0 and feedbackId = #{feedbackId}
+    </select>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuoan.dao.WebsiteParamDao">
+    <sql id="baseSql">
+        paramId,feedbackUserName,feedbackEmail,feedbackPhone,feedbackTitle,feedbackContent,isDelete,modifyTime,createTime
+    </sql>
+
+    <insert id="addWebsiteParam" parameterType="com.zuoan.module.WebsiteParam">
+        INSERT INTO website_param(paramId,paramCode,paramName,paramContent,remark,isDelete,modifyTime,createTime)
+        VALUES (#{paramId},#{paramCode},#{paramName},#{paramContent},#{remark},0,sysdate(),sysdate())
+    </insert>
+
+    <update id="delWebsiteParam" parameterType="string">
+        UPDATE website_param
+        set isDelete = 1 WHERE paramId = #{paramId}
+    </update>
+
+    <update id="updateWebsiteParam" parameterType="com.zuoan.module.WebsiteParam">
+        UPDATE website_param
+        <set>
+            <if test="paramCode != null and paramCode != ''">
+                paramCode = #{paramCode},
+            </if>
+            <if test="paramName != null and paramName != ''">
+                paramName = #{paramName},
+            </if>
+            <if test="paramContent != null and paramContent != ''">
+                paramContent = #{paramContent},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            modifyTime=sysdate()
+        </set>
+        WHERE isDelete = 0 AND typeId = #{typeId}
+    </update>
+    <select id="selectWebsiteParam" parameterType="com.zuoan.module.WebsiteParam" resultType="com.zuoan.module.WebsiteParam">
+        SELECT <include refid="baseSql"/> FROM website_param
+        <where>
+            isDelete = 0
+            <if test="paramCode != null and paramCode != ''">
+                AND paramCode = #{paramCode}
+            </if>
+            <if test="paramName != null and paramName != ''">
+                AND paramName = #{paramName}
+            </if>
+        </where>
+    </select>
+    <select id="selectWebsiteParamById" parameterType="string" resultType="com.zuoan.module.WebsiteParam">
+        SELECT <include refid="baseSql"/> FROM website_param
+        WHERE  isDelete = 0 and paramId = #{paramId}
+    </select>
+    <select id="selectWebsiteParamByCode" parameterType="string" resultType="com.zuoan.module.WebsiteParam">
+        SELECT <include refid="baseSql"/> FROM website_param
+        WHERE  isDelete = 0 and paramCode = #{paramCode}
+    </select>
+</mapper>
