@@ -32,7 +32,7 @@
             </if>
             modifyTime=sysdate()
         </set>
-        WHERE isDelete = 0 AND typeId = #{typeId}
+        WHERE isDelete = 0 AND paramId = #{paramId}
     </update>
     <select id="selectWebsiteParam" parameterType="com.zuoan.module.WebsiteParam" resultType="com.zuoan.module.WebsiteParam">
         SELECT <include refid="baseSql"/> FROM website_param

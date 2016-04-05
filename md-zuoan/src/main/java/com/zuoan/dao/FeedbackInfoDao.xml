@@ -35,7 +35,7 @@
             </if>
             modifyTime=sysdate()
         </set>
-        WHERE isDelete = 0 AND typeId = #{typeId}
+        WHERE isDelete = 0 AND feedbackId = #{feedbackId}
     </update>
     <select id="selectFeedbackInfo" parameterType="com.zuoan.module.FeedbackInfo" resultType="com.zuoan.module.FeedbackInfo">
         SELECT <include refid="baseSql"/> FROM feedback_info

@@ -45,7 +45,7 @@
             </if>
             modifyTime=sysdate()
         </set>
-        WHERE isDelete = 0 AND typeId = #{typeId}
+        WHERE isDelete = 0 AND productId = #{productId}
     </update>
     <select id="selectProductInfo" parameterType="com.zuoan.module.ProductInfo" resultType="com.zuoan.module.ProductInfo">
         SELECT <include refid="baseSql"/> FROM product_info
