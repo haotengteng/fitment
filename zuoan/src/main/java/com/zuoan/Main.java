@@ -15,7 +15,7 @@ import java.net.URI;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://0.0.0.0:8080/";
+    public static final String BASE_URI = "http://0.0.0.0:8080/zuoan/";
 
     public static HttpServer startServer() {
         // 加载jersey扫描

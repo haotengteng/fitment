@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
+ *
  * Created by xujy on 2016/3/26.
  */
 @Path("product/type")
@@ -97,6 +98,30 @@ public class ProductTypeResource {
             json.put("totalSize", 0);
             json.put("page",0);
             json.put("info", new JSONArray());
+        }
+        return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
+    }
+
+    @Path("list")
+    @GET
+    public Response queryProductTypeList(@QueryParam("typeCode") String typeCode,
+                                         @QueryParam("typeName") String typeName) {
+        ProductType query = new ProductType();
+        query.setTypeCode(typeCode);
+        query.setTypeName(typeName);
+        List<ProductType> lists = ApiProvider.productTypeService.queryProductType(query);
+        JSONObject json = new JSONObject();
+        if (lists != null) {
+            JSONArray jsonArray = new JSONArray();
+            for (ProductType productType : lists) {
+                JSONObject jsonObject = (JSONObject) JSON.toJSON(productType);
+                jsonArray.add(jsonObject);
+            }
+            json.put("totalSize", lists.size());
+            json.put("list", jsonArray);
+        } else {
+            json.put("totalSize", 0);
+            json.put("list", new JSONArray());
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
     }
