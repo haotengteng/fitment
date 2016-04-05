@@ -5,6 +5,7 @@ import com.zuoan.module.ProductType;
 import com.zuoan.service.ProductTypeService;
 import com.zuoan.utils.mybatis.Page;
 import com.zuoan.utils.mybatis.PageHelper;
+import com.zuoan.utils.redis.RedisCacheableForDelete;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         return productTypeDao.addProductType(productType)>0;
     }
     @Override
+    @RedisCacheableForDelete
     public boolean delProductType(String typeId) {
         if (StringUtils.isBlank(typeId)){
             return false;

@@ -11,6 +11,8 @@ public class ProductInfo extends Base {
     private String productUrl;
     private String productImageUrl;
     private double productPrice;
+    private Integer salableProduct; //0:表示不是畅销商品，1：表示是畅销商品
+    private Integer specialPriceProduct; //0:表示不是特价商品，1：表示是特价商品
     private String remark;
 
     public String getProductId() {
@@ -59,6 +61,22 @@ public class ProductInfo extends Base {
 
     public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public Integer getSalableProduct() {
+        return salableProduct;
+    }
+
+    public void setSalableProduct(Integer salableProduct) {
+        this.salableProduct = salableProduct;
+    }
+
+    public Integer getSpecialPriceProduct() {
+        return specialPriceProduct;
+    }
+
+    public void setSpecialPriceProduct(Integer specialPriceProduct) {
+        this.specialPriceProduct = specialPriceProduct;
     }
 
     public String getRemark() {

@@ -8,20 +8,17 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-
 /**
- * 创建一个Aop拦截器的处理类,用于拦截加了@RedisCacheable的方法
- * Created by Xujy on 2016/3/26.
+ * Created by Administrator on 2016/4/1.
  */
 @Aspect
 @Component
-public class RedisCacheableForUpdateAop {
+public class RedisCacheableForDeleteAop {
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Around("@annotation(cache)")
-    public Object cached(final ProceedingJoinPoint pjp, RedisCacheableForUpdate cache) throws Throwable {
+    public Object cached(final ProceedingJoinPoint pjp, RedisCacheableForDelete cache) throws Throwable {
 
         String key = getCacheKey(pjp, cache);
         ValueOperations<String, Object> valueOper = redisTemplate.opsForValue();
@@ -30,7 +27,7 @@ public class RedisCacheableForUpdateAop {
         if (value != null) {
             redisTemplate.delete(key);
         }
-         valueOper.get(key);
+        valueOper.get(key);
         return pjp.proceed();//跳过缓存,到后端查询数据
 
     }
@@ -42,19 +39,13 @@ public class RedisCacheableForUpdateAop {
      * @param cache
      * @return key
      */
-    private String getCacheKey(ProceedingJoinPoint pjp, RedisCacheableForUpdate cache) {
+    private String getCacheKey(ProceedingJoinPoint pjp, RedisCacheableForDelete cache) {
         StringBuilder buf = new StringBuilder();
 
         Object[] args = pjp.getArgs();
 
-        if (cache.keyMode() == RedisCacheableForUpdate.KeyMode.DEFAULT) {
-            try {
-                Field field = args[0].getClass().getDeclaredFields()[1];
-                field.setAccessible(true);
-                buf =  new StringBuilder(field.get(args[0]).toString());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+        if (cache.keyMode() == RedisCacheableForDelete.KeyMode.DEFAULT) {
+            buf = new StringBuilder(args[0].toString());
         }
         return buf.append("aop").toString();
     }

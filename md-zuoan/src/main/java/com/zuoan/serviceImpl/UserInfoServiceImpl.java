@@ -6,6 +6,7 @@ import com.zuoan.service.UserInfoService;
 import com.zuoan.utils.mybatis.Page;
 import com.zuoan.utils.mybatis.PageHelper;
 import com.zuoan.utils.redis.RedisCacheable;
+import com.zuoan.utils.redis.RedisCacheableForDelete;
 import com.zuoan.utils.redis.RedisCacheableForUpdate;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userInfoDao.addUserInfo(userInfo) > 0;
     }
 
+    @RedisCacheableForDelete
     public boolean delUserInfo(String userId) {
         if (StringUtils.isBlank(userId)) {
             return false;

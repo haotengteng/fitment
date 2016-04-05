@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zuoan.dao.ProductInfoDao">
     <sql id="baseSql">
-        productId,productType,productName,productUrl,productImageUrl,productPrice,remark,isDelete,modifyTime,createTime
+        productId,productType,productName,productUrl,productImageUrl,productPrice,salableProduct,specialPriceProduct, remark,isDelete,modifyTime,createTime
     </sql>
 
     <insert id="addProductInfo" parameterType="com.zuoan.module.ProductInfo">
-        INSERT INTO product_info(productId,productType,productName,productUrl,productImageUrl,productPrice,remark,isDelete,modifyTime,createTime)
-        VALUES (#{productId},#{productType},#{productName},#{productUrl},#{productImageUrl},#{productPrice},#{remark},0,sysdate(),sysdate())
+        INSERT INTO product_info(productId,productType,productName,productUrl,productImageUrl,productPrice,salableProduct,specialPriceProduct, remark,isDelete,modifyTime,createTime)
+        VALUES (#{productId},#{productType},#{productName},#{productUrl},#{productImageUrl},#{productPrice},#{salableProduct},#{specialPriceProduct},#{remark},0,sysdate(),sysdate())
     </insert>
 
     <update id="delProductInfo" parameterType="string">
@@ -33,6 +33,13 @@
             <if test="productPrice != null ">
                 productPrice = #{productPrice},
             </if>
+            <if test="salableProduct != null ">
+                salableProduct = #{salableProduct},
+            </if>
+            <if test="specialPriceProduct != null ">
+                specialPriceProduct = #{specialPriceProduct},
+            </if>
+
             <if test="remark != null and remark != ''">
                 remark = #{remark},
             </if>

@@ -1,5 +1,6 @@
 package com.zuoan.ApiProvider;
 
+import com.zuoan.service.ArticleService;
 import com.zuoan.service.ProductInfoService;
 import com.zuoan.service.ProductTypeService;
 import com.zuoan.service.UserInfoService;
@@ -14,10 +15,12 @@ public class ApiProvider {
     public static final UserInfoService userInfoService;
     public static final ProductTypeService productTypeService;
     public static final ProductInfoService productInfoService;
+    public static final ArticleService articleService;
     static {
         userInfoService = AppContextHolder.getApplicationContext().getBean(UserInfoService.class);
         productTypeService = AppContextHolder.getApplicationContext().getBean(ProductTypeService.class);
         productInfoService = AppContextHolder.getApplicationContext().getBean(ProductInfoService.class);
         redisCacheManage = AppContextHolder.getApplicationContext().getBean(RedisCacheManage.class);
+        articleService = AppContextHolder.getApplicationContext().getBean(ArticleService.class);
     }
 }
