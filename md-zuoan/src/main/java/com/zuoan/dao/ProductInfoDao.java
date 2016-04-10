@@ -1,6 +1,7 @@
 package com.zuoan.dao;
 
 import com.zuoan.module.ProductInfo;
+import com.zuoan.module.ProductInfoDTO;
 
 import java.util.List;
 
@@ -17,5 +18,9 @@ public interface ProductInfoDao {
 
     List<ProductInfo> selectProductInfo(ProductInfo productInfo);
 
+    List<ProductInfoDTO> selectProductInfoDTO(ProductInfoDTO productInfo);
+
     ProductInfo selectProductInfoById(String productId);
+
+    ProductInfoDTO selectProductInfoDTOById(String productId);
 }

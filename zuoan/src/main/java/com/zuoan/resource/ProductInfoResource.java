@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.zuoan.ApiProvider.ApiProvider;
 import com.zuoan.Utils.UtilTools;
 import com.zuoan.module.ProductInfo;
+import com.zuoan.module.ProductInfoDTO;
 import com.zuoan.utils.mybatis.Page;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
+ *
  * Created by xujy on 2016/3/26.
  */
 @Path("product/info")
@@ -59,7 +61,7 @@ public class ProductInfoResource {
     @GET
     @Path("{productId}")
     public Response getProductInfo(@PathParam("productId") String productId) {
-        ProductInfo productInfo = ApiProvider.productInfoService.queryProductInfoById(productId);
+        ProductInfoDTO productInfo = ApiProvider.productInfoService.queryProductInfoDTOById(productId);
         JSONObject json;
         if (productInfo != null) {
             json = (JSONObject) JSON.toJSON(productInfo);
@@ -77,16 +79,16 @@ public class ProductInfoResource {
                                      @QueryParam("productName") String productName) {
         Integer pageNum = Integer.parseInt(pageIndexStr);
         Integer pageSize = Integer.parseInt(pageSizeStr);
-        ProductInfo query = new ProductInfo();
+        ProductInfoDTO query = new ProductInfoDTO();
         query.setProductType(productType);
         query.setProductName(productName);
         Page page = new Page(pageNum,pageSize);
-        Page<ProductInfo> productInfoPage = ApiProvider.productInfoService.queryProductInfoByPage(query,page);
-        List<ProductInfo> lists = productInfoPage.getResult();
+        Page<ProductInfoDTO> productInfoPage = ApiProvider.productInfoService.queryProductInfoDTOByPage(query,page);
+        List<ProductInfoDTO> lists = productInfoPage.getResult();
         JSONObject json = new JSONObject();
         if (lists != null) {
             JSONArray jsonArray = new JSONArray();
-            for (ProductInfo productInfo : lists) {
+            for (ProductInfoDTO productInfo : lists) {
                 JSONObject jsonObject = (JSONObject) JSON.toJSON(productInfo);
                 jsonArray.add(jsonObject);
             }

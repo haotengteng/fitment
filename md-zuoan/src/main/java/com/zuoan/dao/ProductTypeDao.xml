@@ -47,6 +47,7 @@
                 AND typeName = #{typeName}
             </if>
         </where>
+        order by typeCode
     </select>
     <select id="selectProductTypeById" parameterType="string" resultType="com.zuoan.module.ProductType">
         SELECT <include refid="baseSql"/> FROM product_type

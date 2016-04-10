@@ -2,6 +2,7 @@ package com.zuoan.serviceImpl;
 
 import com.zuoan.dao.ProductInfoDao;
 import com.zuoan.module.ProductInfo;
+import com.zuoan.module.ProductInfoDTO;
 import com.zuoan.service.ProductInfoService;
 import com.zuoan.utils.mybatis.Page;
 import com.zuoan.utils.mybatis.PageHelper;
@@ -50,6 +51,10 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     public List<ProductInfo> queryProductInfo(ProductInfo productInfo) {
         return productInfoDao.selectProductInfo(productInfo);
     }
+    @Override
+    public List<ProductInfoDTO> queryProductInfoDTO(ProductInfoDTO productInfo) {
+        return productInfoDao.selectProductInfoDTO(productInfo);
+    }
 
     @Override
     public Page<ProductInfo> queryProductInfoByPage(ProductInfo productInfo, Page page) {
@@ -59,10 +64,25 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     }
 
     @Override
+    public Page<ProductInfoDTO> queryProductInfoDTOByPage(ProductInfoDTO productInfo, Page page) {
+        PageHelper.startPage(page.getPageNum(),page.getPageSize());
+        productInfoDao.selectProductInfoDTO(productInfo);
+        return PageHelper.endPage();
+    }
+
+    @Override
     public ProductInfo queryProductInfoById(String productId) {
         if (StringUtils.isBlank(productId)){
             return null;
         }
         return productInfoDao.selectProductInfoById(productId);
+    }
+
+    @Override
+    public ProductInfoDTO queryProductInfoDTOById(String productId) {
+        if (StringUtils.isBlank(productId)){
+            return null;
+        }
+        return productInfoDao.selectProductInfoDTOById(productId);
     }
 }

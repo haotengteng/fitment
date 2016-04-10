@@ -1,6 +1,7 @@
 package com.zuoan.service;
 
 import com.zuoan.module.ProductInfo;
+import com.zuoan.module.ProductInfoDTO;
 import com.zuoan.utils.mybatis.Page;
 
 import java.util.List;
@@ -18,7 +19,13 @@ public interface ProductInfoService {
 
     List<ProductInfo> queryProductInfo(ProductInfo productInfo);
 
+    List<ProductInfoDTO> queryProductInfoDTO(ProductInfoDTO productInfoDTO);
+
     Page<ProductInfo> queryProductInfoByPage(ProductInfo productInfo,Page page);
 
+    Page<ProductInfoDTO> queryProductInfoDTOByPage(ProductInfoDTO productInfoDTO,Page page);
+
     ProductInfo queryProductInfoById(String productId);
+
+    ProductInfoDTO queryProductInfoDTOById(String productId);
 }

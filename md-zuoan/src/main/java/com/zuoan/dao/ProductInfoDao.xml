@@ -59,8 +59,25 @@
             </if>
         </where>
     </select>
+    <select id="selectProductInfoDTO" parameterType="com.zuoan.module.ProductInfoDTO" resultType="com.zuoan.module.ProductInfoDTO">
+        SELECT t1.*,t2.typeName as productTypeName FROM product_info t1,product_type t2
+        <where>
+            t1.isDelete = 0 and t1.productType = t2.typeCode
+            <if test="productType != null and productType != ''">
+                AND t1.productType = #{productType}
+            </if>
+            <if test="productName != null and productName != ''">
+                AND t1.productName = #{productName}
+            </if>
+        </where>
+        order by createTime
+    </select>
     <select id="selectProductInfoById" parameterType="string" resultType="com.zuoan.module.ProductInfo">
         SELECT <include refid="baseSql"/> FROM product_info
         WHERE  isDelete = 0 and productId = #{productId}
+    </select>
+    <select id="selectProductInfoDTOById" parameterType="string" resultType="com.zuoan.module.ProductInfoDTO">
+        SELECT t1.*,t2.typeName as productTypeName FROM product_info t1,product_type t2
+        WHERE  t1.isDelete = 0 and t1.productType = t2.typeCode and t1.productId = #{productId}
     </select>
 </mapper>
