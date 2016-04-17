@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zuoan.dao.ProductTypeDao">
     <sql id="baseSql">
-        typeId,typeCode,typeName,remark,isDelete,modifyTime,createTime
+        typeId,typeCode,typeName,typeImageUrl,remark,isDelete,modifyTime,createTime
     </sql>
 
     <insert id="addProductType" parameterType="com.zuoan.module.ProductType">
-        INSERT INTO product_type(typeId,typeCode,typeName,remark,isDelete,modifyTime,createTime)
-        VALUES (#{typeId},#{typeCode},#{typeName},#{remark},0,sysdate(),sysdate())
+        INSERT INTO product_type(typeId,typeCode,typeName,typeImageUrl,remark,isDelete,modifyTime,createTime)
+        VALUES (#{typeId},#{typeCode},#{typeName},#{typeImageUrl},#{remark},0,sysdate(),sysdate())
 
     </insert>
 
@@ -28,6 +28,9 @@
             </if>
             <if test="typeName != null and typeName != ''">
                 typeName = #{typeName},
+            </if>
+            <if test="typeImageUrl != null and typeImageUrl != ''">
+                typeImageUrl = #{typeImageUrl},
             </if>
             <if test="remark != null and remark != ''">
                 remark = #{remark},

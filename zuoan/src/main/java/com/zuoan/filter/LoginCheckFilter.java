@@ -19,19 +19,21 @@ public class LoginCheckFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         String path = requestContext.getUriInfo().getPath();
         // 路径需要配置(配置哪些不需要登录的)
-        if (!(path.startsWith("account")
-                || path.startsWith("application.wadl")
-                || path.startsWith("param/code")
-                || path.startsWith("feedback"))) {
-            Cookie cookie = requestContext.getCookies().get("token");
-            if (cookie != null && "token".equals(cookie.getName())) {
-                if (ApiProvider.redisCacheManage.getValue(cookie.getValue()) == null) {
+        if (!"GET".equals(requestContext.getMethod())) {
+            if (!(path.startsWith("account")
+                    || path.startsWith("application.wadl")
+                    || path.startsWith("param/code")
+                    || path.startsWith("feedback"))) {
+                Cookie cookie = requestContext.getCookies().get("token");
+                if (cookie != null && "token".equals(cookie.getName())) {
+                    if (ApiProvider.redisCacheManage.getValue(cookie.getValue()) == null) {
+                        //跳转到登陆界面
+                        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+                    }
+                } else {
                     //跳转到登陆界面
                     requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
                 }
-            } else {
-                //跳转到登陆界面
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             }
         }
     }

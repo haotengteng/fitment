@@ -71,6 +71,6 @@ public class WebsiteParamServiceImpl implements WebsiteParamService {
         if (StringUtils.isBlank(paramCode)){
             return null;
         }
-        return websiteParamDao.selectWebsiteParamById(paramCode);
+        return websiteParamDao.selectWebsiteParamByCode(paramCode);
     }
 }

@@ -76,12 +76,18 @@ public class ProductInfoResource {
     public Response queryProductInfo(@PathParam("pageIndex") @DefaultValue("1") final String pageIndexStr,
                                      @QueryParam("pageSize") @DefaultValue("10") final String pageSizeStr,
                                      @QueryParam("productType") String productType,
-                                     @QueryParam("productName") String productName) {
+                                     @QueryParam("productName") String productName,
+                                     @QueryParam("newProduct") Integer newProduct,
+                                     @QueryParam("salableProduct") Integer salableProduct,
+                                     @QueryParam("specialPriceProduct") Integer specialPriceProduct) {
         Integer pageNum = Integer.parseInt(pageIndexStr);
         Integer pageSize = Integer.parseInt(pageSizeStr);
         ProductInfoDTO query = new ProductInfoDTO();
         query.setProductType(productType);
         query.setProductName(productName);
+        query.setNewProduct(newProduct);
+        query.setSalableProduct(salableProduct);
+        query.setSpecialPriceProduct(specialPriceProduct);
         Page page = new Page(pageNum,pageSize);
         Page<ProductInfoDTO> productInfoPage = ApiProvider.productInfoService.queryProductInfoDTOByPage(query,page);
         List<ProductInfoDTO> lists = productInfoPage.getResult();

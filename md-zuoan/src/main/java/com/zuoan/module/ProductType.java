@@ -8,7 +8,16 @@ public class ProductType extends Base {
     private String typeId;
     private String typeCode;
     private String typeName;
+    private String typeImageUrl;
     private String remark;
+
+    public String getTypeImageUrl() {
+        return typeImageUrl;
+    }
+
+    public void setTypeImageUrl(String typeImageUrl) {
+        this.typeImageUrl = typeImageUrl;
+    }
 
     public String getTypeId() {
         return typeId;

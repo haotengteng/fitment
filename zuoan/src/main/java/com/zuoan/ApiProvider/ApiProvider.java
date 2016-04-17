@@ -1,7 +1,7 @@
 package com.zuoan.ApiProvider;
 
 import com.zuoan.service.*;
-import com.zuoan.service.ArticleService;
+import com.zuoan.service.CarouselService;
 import com.zuoan.service.ProductInfoService;
 import com.zuoan.service.ProductTypeService;
 import com.zuoan.service.UserInfoService;
@@ -16,7 +16,7 @@ public class ApiProvider {
     public static final UserInfoService userInfoService;
     public static final ProductTypeService productTypeService;
     public static final ProductInfoService productInfoService;
-    public static final ArticleService articleService;
+    public static final CarouselService CAROUSEL_SERVICE;
     public static final FeedbackInfoService feedbackInfoService;
     public static final WebsiteParamService websiteParamService;
     static {
@@ -24,7 +24,7 @@ public class ApiProvider {
         productTypeService = AppContextHolder.getApplicationContext().getBean(ProductTypeService.class);
         productInfoService = AppContextHolder.getApplicationContext().getBean(ProductInfoService.class);
         redisCacheManage = AppContextHolder.getApplicationContext().getBean(RedisCacheManage.class);
-        articleService = AppContextHolder.getApplicationContext().getBean(ArticleService.class);
+        CAROUSEL_SERVICE = AppContextHolder.getApplicationContext().getBean(CarouselService.class);
         feedbackInfoService = AppContextHolder.getApplicationContext().getBean(FeedbackInfoService.class);
         websiteParamService = AppContextHolder.getApplicationContext().getBean(WebsiteParamService.class);
     }

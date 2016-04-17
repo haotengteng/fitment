@@ -12,9 +12,18 @@ public class ProductInfoDTO extends Base {
     private String productUrl;
     private String productImageUrl;
     private double productPrice;
+    private Integer newProduct; //0:表示不是新款商品，1：表示是新款商品
     private Integer salableProduct; //0:表示不是畅销商品，1：表示是畅销商品
     private Integer specialPriceProduct; //0:表示不是特价商品，1：表示是特价商品
     private String remark;
+
+    public Integer getNewProduct() {
+        return newProduct;
+    }
+
+    public void setNewProduct(Integer newProduct) {
+        this.newProduct = newProduct;
+    }
 
     public String getProductId() {
         return productId;
