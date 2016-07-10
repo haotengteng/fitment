@@ -108,4 +108,37 @@ public class ProductInfoResource {
         }
         return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
     }
+
+    @Path("list")
+    @GET
+    public Response queryProductInfoList(@QueryParam("productType") String productType,
+                                         @QueryParam("productName") String productName,
+                                         @QueryParam("newProduct") Integer newProduct,
+                                         @QueryParam("salableProduct") Integer salableProduct,
+                                         @QueryParam("specialPriceProduct") Integer specialPriceProduct,
+                                         @QueryParam("flag") String flag) {
+        ProductInfo query = new ProductInfo();
+        query.setProductType(productType);
+        query.setProductName(productName);
+        query.setNewProduct(newProduct);
+        query.setSalableProduct(salableProduct);
+        query.setSpecialPriceProduct(specialPriceProduct);
+        List<ProductInfo> lists = ApiProvider.productInfoService.queryProductInfo(query);
+        JSONObject json = new JSONObject();
+        if (lists != null) {
+            JSONArray jsonArray = new JSONArray();
+            for (ProductInfo productInfo : lists) {
+                JSONObject jsonObject = (JSONObject) JSON.toJSON(productInfo);
+                jsonArray.add(jsonObject);
+            }
+            json.put("totalSize", lists.size());
+            json.put("list", jsonArray);
+            json.put("flag", flag);
+        } else {
+            json.put("totalSize", 0);
+            json.put("list", new JSONArray());
+            json.put("flag", flag);
+        }
+        return Response.status(Response.Status.OK).entity(json.toJSONString()).type(MediaType.APPLICATION_JSON).build();
+    }
 }
